@@ -149,7 +149,7 @@ export default function TopUp() {
                     onClick={handleCloseModal}
                     className="text-red-500 text-center text-sm py-2 rounded cursor-pointer"
                   >
-                    Kembali ke beranda
+                    <Link to="/">Kembali ke beranda</Link>
                   </div>
                 )}
                 {!success && !error && (
