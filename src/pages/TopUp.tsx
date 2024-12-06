@@ -1,17 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getProfile, getBalance } from "../store/reducers/authReducers";
 import type { AppDispatch } from "../store";
-import Header from "../components/Header/Header";
-import ProfileSaldo from "../components/ProfileSaldo/ProfileSaldo";
 import { MdOutlineMoney } from "react-icons/md";
 import { topup } from "../store/reducers/transactionReducer";
 
 export default function TopUp() {
   const dispatch = useDispatch<AppDispatch>();
-  const profile = useSelector((state: any) => state.auth.profile);
-  const balance = useSelector((state: any) => state.auth.balance);
   const [amount, setAmount] = useState(0);
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -62,15 +58,8 @@ export default function TopUp() {
     setError(false);
   }
 
-  console.log("error", error);
-  console.log("success", success);
-
-  console.log("balance", balance);
-  console.log("amount", amount);
   return (
     <div>
-      <Header />
-      <ProfileSaldo profile={profile} balance={balance} />
       <div className="px-24 mt-20">
         <div>
           <h1>Silahkan masukkan</h1>

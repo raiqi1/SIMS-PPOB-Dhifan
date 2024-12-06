@@ -2,9 +2,9 @@ import { useState } from "react";
 
 type ProfileSaldoProps = {
   profile: {
-      profile_image?: string;
-      first_name?: string;
-      last_name?: string;
+    profile_image?: string;
+    first_name?: string;
+    last_name?: string;
   };
   balance: {
     balance?: number;
@@ -12,23 +12,29 @@ type ProfileSaldoProps = {
 };
 export default function ProfileSaldo({ profile, balance }: ProfileSaldoProps) {
   const [showBalance, setShowBalance] = useState(false);
+  const token = localStorage.getItem("token");
   const formatRupiah = (amount: number) =>
     new Intl.NumberFormat("id-ID").format(amount);
   return (
     <div className="px-24 mt-10 md:flex justify-between">
-      <div>
-        <img
-          src={profile?.profile_image}
-          alt="Profile"
-          className="h-16 w-16 rounded-full"
-        />
-        <div className="text-sm mt-10">Selamat Datang,</div>
-        <div className="font-semibold md:text-2xl">
-          {(profile?.first_name ?? "") +
-            " " +
-            (profile?.last_name ?? "")}
+      {token ? (
+        <div>
+          <img
+            src={profile?.profile_image}
+            alt="Profile"
+            className="h-16 w-16 rounded-full"
+          />
+          <div className="text-sm mt-10">Selamat Datang,</div>
+          <div className="font-semibold md:text-2xl">
+            {(profile?.first_name ?? "") + " " + (profile?.last_name ?? "")}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div>
+          <h1 className="text-2xl font-semibold">Selamat Datang</h1>
+          <p>Silahkan login untuk melihat saldo anda</p>
+        </div>
+      )}
       <div className="relative">
         <div className="absolute lg:left-7 md:left-4 top-7 z-10 text-white">
           <h1>Saldo anda</h1>

@@ -13,7 +13,7 @@ import Pembelian from "./pages/Pembelian";
 import Header from "./components/Header/Header";
 import ProfileSaldo from "./components/ProfileSaldo/ProfileSaldo";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch } from "./store";
+import type { AppDispatch, RootState } from "./store";
 import { useEffect } from "react";
 import { getBalance, getProfile } from "./store/reducers/authReducers";
 import Transaction from "./pages/Transaction";
@@ -21,8 +21,8 @@ import Account from "./pages/Account";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const profile = useSelector((state: any) => state.auth.profile);
-  const balance = useSelector((state: any) => state.auth.balance);
+  const profile = useSelector((state: RootState) => state.auth.profile);
+  const balance = useSelector((state: RootState) => state.auth.balance);
 
   useEffect(() => {
     dispatch(getProfile());
