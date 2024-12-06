@@ -94,7 +94,7 @@ export default function Login() {
                 className={`w-full px-4 py-2 pl-10 mt-1 border border-gray-300 rounded focus:outline-none focus:ring-1 placeholder:text-sm focus:ring-gray-300 ${
                   error ? "border-red-500" : ""
                 }`}
-                placeholder="buat password"
+                placeholder="masukkan password anda"
                 value={password}
                 required
                 onChange={(e) => setPassword(e.target.value)}
