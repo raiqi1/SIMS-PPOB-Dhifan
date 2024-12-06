@@ -160,8 +160,8 @@ export const authReducer = createSlice({
       state.successMessage = "";
     },
     user_reset: (state) => {
-      state.userInfo = ""; // Reset informasi user
-      state.profile = null; // Reset data profil
+      state.userInfo = ""; 
+      state.profile = null;
     },
     balance_reset: (state) => {
       state.balance = null;
@@ -180,7 +180,7 @@ export const authReducer = createSlice({
         state.userInfo = userInfo;
       })
       .addCase(register.rejected, (state, action: PayloadAction<any>) => {
-        state.errorMessage = action.payload?.error || "Error";
+        state.errorMessage = action.payload?.error;
         state.loader = false;
       })
       // Login
@@ -194,7 +194,7 @@ export const authReducer = createSlice({
         state.userInfo = userInfo; // Set informasi user
       })
       .addCase(login.rejected, (state, action: PayloadAction<any>) => {
-        state.errorMessage = action.payload?.error || "Error";
+        state.errorMessage = action.payload?.message;
         state.loader = false;
       })
       // Get Profile

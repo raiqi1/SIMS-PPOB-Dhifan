@@ -21,8 +21,8 @@ import Account from "./pages/Account";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const profile = useSelector((state: RootState) => state.auth.profile);
-  const balance = useSelector((state: RootState) => state.auth.balance);
+  const { profile, loader } = useSelector((state: RootState) => state.auth);
+  const { balance } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     dispatch(getProfile());
@@ -31,12 +31,20 @@ function App() {
 
   return (
     <Router>
-      <MainLayout profile={profile} balance={balance} />
+      <MainLayout profile={profile} balance={balance} loader={loader} />
     </Router>
   );
 }
 
-function MainLayout({ profile, balance }: { profile: any; balance: any }) {
+function MainLayout({
+  profile,
+  balance,
+  loader,
+}: {
+  profile: any;
+  balance: any;
+  loader: boolean;
+}) {
   const location = useLocation();
   const excludeHeaderAndProfileSaldo = ["/login", "/register", "/account"];
 
@@ -45,7 +53,7 @@ function MainLayout({ profile, balance }: { profile: any; balance: any }) {
       {!excludeHeaderAndProfileSaldo.includes(location.pathname) && (
         <>
           <Header />
-          <ProfileSaldo profile={profile} balance={balance} />
+          <ProfileSaldo profile={profile} balance={balance} loader={loader} />
         </>
       )}
       <Routes>

@@ -12,10 +12,12 @@ import {
   MdOutlinePerson,
 } from "react-icons/md";
 import Header from "../components/Header/Header";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function Account() {
   const dispatch = useDispatch<AppDispatch>();
-  const profile = useSelector((state: RootState) => state.auth.profile);
+  const { profile, loader } = useSelector((state: RootState) => state.auth);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [edit, setEdit] = useState(false);
   const [firstName, setFirstName] = useState(profile?.first_name || "");
@@ -81,11 +83,17 @@ export default function Account() {
       <div className="px-36 mb-20">
         <div className="flex justify-center">
           <div>
-            <img
-              src={profile?.profile_image}
-              alt=""
-              className="w-24 h-24 rounded-full mt-28 border border-gray-300 p-[1px]"
-            />
+            {loader ? (
+              <div>
+                <Skeleton width={150} height={150} circle={true} />
+              </div>
+            ) : (
+              <img
+                src={profile?.profile_image}
+                alt=""
+                className="w-24 h-24 rounded-full mt-28 border border-gray-300 p-[1px]"
+              />
+            )}
             <input
               type="file"
               ref={fileInputRef}
@@ -103,7 +111,11 @@ export default function Account() {
               </div>
             </button>
             <h1 className="flex justify-center font-semibold text-2xl relative bottom-3">
-              {profile?.first_name}
+              {loader ? (
+                <Skeleton width={200} height={24} />
+              ) : (
+                profile?.first_name
+              )}
             </h1>
           </div>
         </div>
@@ -113,14 +125,18 @@ export default function Account() {
               <label htmlFor="" className="">
                 Email
               </label>
-              <input
-                type="text"
-                id="phone"
-                className="w-full px-4 py-2 pl-10 mt-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-300 placeholder:text-sm"
-                placeholder="masukkan email anda"
-                value={profile?.email}
-                disabled
-              />
+              {loader ? (
+                <div className="w-full h-10 bg-gray-200 rounded mt-2 animate-pulse"></div>
+              ) : (
+                <input
+                  type="text"
+                  id="phone"
+                  className="w-full px-4 py-2 pl-10 mt-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-300 placeholder:text-sm"
+                  placeholder="masukkan email anda"
+                  value={profile?.email}
+                  disabled
+                />
+              )}
               <div
                 className={`"text-black" absolute left-3 top-[55px] transform -translate-y-1/2 `}
               >
@@ -131,14 +147,18 @@ export default function Account() {
               <label htmlFor="" className="">
                 Nama Depan
               </label>
-              <input
-                type="text"
-                id="phone"
-                className="w-full px-4 py-2 pl-10 mt-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-300 placeholder:text-sm"
-                value={firstName}
-                disabled={!edit}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
+              {loader ? (
+                <div className="w-full h-10 bg-gray-200 rounded mt-2 animate-pulse"></div>
+              ) : (
+                <input
+                  type="text"
+                  id="phone"
+                  className="w-full px-4 py-2 pl-10 mt-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-300 placeholder:text-sm"
+                  value={firstName}
+                  disabled={!edit}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              )}
               <div
                 className={`"text-black" absolute left-3 top-[55px] transform -translate-y-1/2 `}
               >
@@ -149,14 +169,18 @@ export default function Account() {
               <label htmlFor="" className="">
                 Nama Belakang
               </label>
-              <input
-                type="text"
-                id="phone"
-                className="w-full px-4 py-2 pl-10 mt-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-300 placeholder:text-sm"
-                value={lastName}
-                disabled={!edit}
-                onChange={(e) => setLastName(e.target.value)}
-              />
+              {loader ? (
+                <div className="w-full h-10 bg-gray-200 rounded mt-2 animate-pulse"></div>
+              ) : (
+                <input
+                  type="text"
+                  id="phone"
+                  className="w-full px-4 py-2 pl-10 mt-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-300 placeholder:text-sm"
+                  value={lastName}
+                  disabled={!edit}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              )}
               <div
                 className={`"text-black" absolute left-3 top-[55px] transform -translate-y-1/2 `}
               >
@@ -169,7 +193,7 @@ export default function Account() {
                   className="w-full bg-[#FF2929] p-2 rounded text-white mt-4"
                   onClick={() => setEdit(true)}
                 >
-                  Save
+                  {loader ? "Loading..." : "Simpan"}
                 </button>
               </>
             )}

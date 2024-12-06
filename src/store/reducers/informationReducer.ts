@@ -9,6 +9,12 @@ interface Service {
   service_tariff: number;
 }
 
+interface Banner {
+  banner_name: string;
+  banner_image: string;
+  description: string;
+}
+
 export const getService = createAsyncThunk<any, void, { rejectValue: any }>(
   "service",
   async (_, { rejectWithValue, fulfillWithValue }) => {
@@ -30,11 +36,32 @@ export const getService = createAsyncThunk<any, void, { rejectValue: any }>(
   }
 );
 
+export const getBanner = createAsyncThunk<any, void, { rejectValue: any }>(
+  "banner",
+  async (_, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return rejectWithValue("user not found");
+      }
+      const { data } = await api.get("/banner", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return fulfillWithValue(data?.data);
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data || error?.message);
+    }
+  }
+);
+
 export const informationReducer = createSlice({
   name: "information",
   initialState: {
     loader: false,
     service: [] as Service[],
+    banner: [] as Banner[],
     errorMessage: "",
     successMessage: "",
   },
@@ -57,6 +84,17 @@ export const informationReducer = createSlice({
         state.service = action.payload;
       })
       .addCase(getService.rejected, (state, action) => {
+        state.loader = false;
+        state.errorMessage = action.payload as string;
+      })
+      .addCase(getBanner.pending, (state) => {
+        state.loader = true;
+      })
+      .addCase(getBanner.fulfilled, (state, action: PayloadAction<any>) => {
+        state.loader = false;
+        state.banner = action.payload;
+      })
+      .addCase(getBanner.rejected, (state, action: PayloadAction<any>) => {
         state.loader = false;
         state.errorMessage = action.payload as string;
       });

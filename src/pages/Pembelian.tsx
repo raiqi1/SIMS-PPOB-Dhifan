@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineMoney } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import { AppDispatch } from "../store";
 import { bayarTransaksi } from "../store/reducers/transactionReducer";
+import { getBalance, getProfile } from "../store/reducers/authReducers";
 
 export default function Pembelian() {
   const { code } = useParams();
@@ -13,6 +14,12 @@ export default function Pembelian() {
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    dispatch(getProfile());
+    dispatch(getBalance());
+  }, [dispatch]);
+
 
   const formatRupiahInput = (amount: number) =>
     new Intl.NumberFormat("id-ID").format(amount);

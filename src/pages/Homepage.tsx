@@ -1,37 +1,43 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {getBalance, getProfile} from "../store/reducers/authReducers";
+import { getBalance, getProfile } from "../store/reducers/authReducers";
 import type { AppDispatch, RootState } from "../store";
-// import Header from "../components/Header/Header"; // Import FeatureList component
 import FeatureList from "../components/Fitur/Fitur";
 import BannerSlider from "../components/BannerSlider/Slider";
+import { getBanner, getService } from "../store/reducers/informationReducer";
 // import ProfileSaldo from "../components/ProfileSaldo/ProfileSaldo";
-import { getService } from "../store/reducers/informationReducer";
+// import Header from "../components/Header/Header";
 
 export default function Homepage() {
   const dispatch = useDispatch<AppDispatch>();
-  const balance = useSelector((state: RootState) => state.auth.balance);
-  const service = useSelector((state: RootState) => state.information.service);
+  const { service, loader, banner } = useSelector(
+    (state: RootState) => state.information
+  );
+  // const { profile, loader: loaderProfile } = useSelector(
+  //   (state: RootState) => state.auth
+  // );
+  // const { balance } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     dispatch(getProfile());
     dispatch(getBalance());
     dispatch(getService());
+    dispatch(getBanner());
   }, [dispatch]);
-
-  console.log("balance", balance);
-  console.log("service",service)
 
   return (
     <div>
       {/* <Header />
-      <ProfileSaldo profile={profile} balance={balance} /> */}
+      <ProfileSaldo
+        profile={profile}
+        balance={balance}
+        loader={loaderProfile}
+      /> */}
       <div className="px-24">
-        <FeatureList features={service} />
+        <FeatureList features={service} loader={loader} />
       </div>
       <div className="ps-24">
-        <BannerSlider />
+        <BannerSlider bannerImg={banner} loader={loader} />
       </div>
     </div>
   );

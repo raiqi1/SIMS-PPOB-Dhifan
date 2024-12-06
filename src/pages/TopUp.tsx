@@ -90,7 +90,7 @@ export default function TopUp() {
             </button>
           </div>
           {showModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="fixed z-20 inset-0 bg-black bg-opacity-50 flex justify-center items-center">
               <div className="bg-white p-4 rounded-lg w-[250px]">
                 <div className="flex justify-center mt-3">
                   {success && (
