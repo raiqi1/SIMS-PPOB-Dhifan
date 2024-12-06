@@ -113,14 +113,14 @@ const Transaction = () => {
                       <div
                         className={`text-lg font-semibold ${
                           transaction.transaction_type === "PAYMENT"
-                            ? "text-green-600"
-                            : "text-red-600"
+                            ? "text-red-600"
+                            : "text-green-600"
                         }`}
                       >
                         <span className="mr-1">
                           {transaction.transaction_type === "PAYMENT"
-                            ? "+"
-                            : "-"}
+                            ? "-"
+                            : "+"}
                         </span>
                         {formatRupiah(transaction.total_amount)}
                       </div>

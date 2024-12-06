@@ -5,6 +5,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { AppDispatch } from "../store";
 import { bayarTransaksi } from "../store/reducers/transactionReducer";
 import { getBalance, getProfile } from "../store/reducers/authReducers";
+import { Link } from "react-router-dom";
 
 export default function Pembelian() {
   const { code } = useParams();
@@ -19,7 +20,6 @@ export default function Pembelian() {
     dispatch(getProfile());
     dispatch(getBalance());
   }, [dispatch]);
-
 
   const formatRupiahInput = (amount: number) =>
     new Intl.NumberFormat("id-ID").format(amount);
@@ -43,6 +43,7 @@ export default function Pembelian() {
       const result = await dispatch(bayarTransaksi(payload)).unwrap();
       console.log("result", result);
       setSuccess(true);
+      dispatch(getBalance());
     } catch (err) {
       console.log("error", err);
       setError(true);
@@ -139,7 +140,7 @@ export default function Pembelian() {
                 onClick={handleCloseModal}
                 className="text-red-500 text-center text-sm py-2 rounded cursor-pointer"
               >
-                Kembali ke beranda
+                <Link to="/">Kembali ke beranda</Link>
               </div>
             )}
             {error && (

@@ -38,10 +38,15 @@ export default function ProfileSaldo({
             </div>
           ) : (
             <>
+              {/* Profile Image */}
               <img
                 src={profile?.profile_image}
-                alt="Profile"
+                alt=""
                 className="h-16 w-16 rounded-full"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).onerror = null; 
+                  (e.target as HTMLImageElement).src = "/assets/Profile.png"; 
+                }}
               />
               <div className="text-sm mt-10">Selamat Datang,</div>
               <div className="font-semibold md:text-2xl">

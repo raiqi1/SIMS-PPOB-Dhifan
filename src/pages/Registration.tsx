@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   MdLockOutline,
@@ -8,11 +8,12 @@ import {
   MdVisibility,
   MdVisibilityOff,
 } from "react-icons/md";
-import type { AppDispatch } from "../store";
+import type { AppDispatch, RootState } from "../store";
 import { register } from "../store/reducers/authReducers";
 
 export default function Register() {
   const dispatch = useDispatch<AppDispatch>();
+  const { errorMessage } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -20,6 +21,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
+  const [errorRegister, setErrorRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
   const [showConfirmPassword, setShowConfirmPassword] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,20 +45,23 @@ export default function Register() {
       last_name: lastName,
       password,
     };
-    setIsLoading(true); // Aktifkan loading state
+    setIsLoading(true);
 
     try {
-      await dispatch(register(payload)).unwrap(); // Tunggu hingga async thunk selesai
-      navigate("/login"); // Arahkan ke halaman login
+      await dispatch(register(payload)).unwrap();
+      navigate("/login");
     } catch (err) {
       console.error("Registration failed:", err);
+      setErrorRegister(true);
     } finally {
-      setIsLoading(false); // Matikan loading state
+      setIsLoading(false);
     }
   };
 
+  console.log("errorMessage", errorMessage);
+
   return (
-    <div className="flex w-full">
+    <div className="flex w-full max-sm:flex-col">
       <div className="w-full p-[10vw]">
         <form onSubmit={handleRegister}>
           <div>
@@ -79,7 +84,11 @@ export default function Register() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <div className="absolute left-3 top-[1.9vw] text-gray-400">
+            <div
+              className={`absolute left-3 top-[19px] ${
+                email ? "text-black" : "text-gray-400"
+              }`}
+            >
               <MdOutlineAlternateEmail className="h-4 w-4" />
             </div>
           </div>
@@ -92,7 +101,11 @@ export default function Register() {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
-            <div className="absolute left-3 top-[1.9vw] text-gray-400">
+            <div
+              className={`absolute left-3 top-[19px] ${
+                firstName ? "text-black" : "text-gray-400"
+              }`}
+            >
               <MdOutlinePerson className="h-4 w-4" />
             </div>
           </div>
@@ -105,7 +118,11 @@ export default function Register() {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
-            <div className="absolute left-3 top-[1.9vw] text-gray-400">
+            <div
+              className={`absolute left-3 top-[19px] ${
+                lastName ? "text-black" : "text-gray-400"
+              }`}
+            >
               <MdOutlinePerson className="h-4 w-4" />
             </div>
           </div>
@@ -119,12 +136,16 @@ export default function Register() {
               onChange={(e) => setPassword(e.target.value)}
               onBlur={cekPassword}
             />
-            <div className="absolute left-3 top-[25px] text-gray-400">
+            <div
+              className={`absolute left-3 top-[19px] ${
+                password ? "text-black" : "text-gray-400"
+              }`}
+            >
               <MdLockOutline className="h-4 w-4" />
             </div>
             <div
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-[55%] cursor-pointer text-gray-500"
+              className="absolute right-3 top-[40%] cursor-pointer text-gray-500"
             >
               {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
             </div>
@@ -141,18 +162,26 @@ export default function Register() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               onBlur={cekPassword}
             />
-            <div className="absolute left-3 top-[25px] text-gray-400">
+            <div
+              className={`absolute left-3 top-[19px] ${
+                confirmPassword ? "text-black" : "text-gray-400"
+              }`}
+            >
               <MdLockOutline className="h-4 w-4" />
             </div>
             <div
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-[55%] cursor-pointer text-gray-500"
+              className="absolute right-3 top-[40%] cursor-pointer text-gray-500"
             >
               {showConfirmPassword ? <MdVisibilityOff /> : <MdVisibility />}
             </div>
           </div>
           {error && (
             <div className="text-red-500 text-sm mt-1">Password tidak sama</div>
+          )}
+          {/* error message */}
+          {errorRegister && (
+            <div className="text-red-500 text-sm mt-1">{errorMessage}</div>
           )}
           {/* Tombol Registrasi */}
           <button
@@ -173,6 +202,13 @@ export default function Register() {
             </a>
           </h1>
         </div>
+      </div>
+      <div className="flex justify-end w-full">
+        <img
+          src="../../../../assets/bglogin.png"
+          alt=""
+          className="h-[900px] w-[765px]"
+        />
       </div>
     </div>
   );

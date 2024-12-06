@@ -5,6 +5,7 @@ import { getProfile, getBalance } from "../store/reducers/authReducers";
 import type { AppDispatch } from "../store";
 import { MdOutlineMoney } from "react-icons/md";
 import { topup } from "../store/reducers/transactionReducer";
+import { Link } from "react-router-dom";
 
 export default function TopUp() {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,6 +45,7 @@ export default function TopUp() {
       const response = await dispatch(topup(payload)).unwrap();
       console.log("response", response);
       setSuccess(true);
+      dispatch(getBalance());
     } catch (err: any) {
       console.error("Top Up failed:", err);
       setError(err);
@@ -112,7 +114,9 @@ export default function TopUp() {
                   {!success && !error && "Anda yakin untuk  Top Up sebesar"}
                 </h1>
                 <h2 className="text-xl font-semibold text-center">
-                  {formatRupiah(amount)} ?
+                  {success && formatRupiah(amount)}
+                  {error && formatRupiah(amount)}
+                  {!success && !error && formatRupiah(amount) + " ?"}
                 </h2>
                 {success && (
                   <div>
@@ -137,7 +141,7 @@ export default function TopUp() {
                     onClick={handleCloseModal}
                     className="text-red-500 text-center text-sm py-2 rounded cursor-pointer"
                   >
-                    Kembali ke beranda
+                    <Link to="/">Kembali ke beranda</Link>
                   </div>
                 )}
                 {error && (

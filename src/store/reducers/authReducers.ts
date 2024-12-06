@@ -180,7 +180,7 @@ export const authReducer = createSlice({
         state.userInfo = userInfo;
       })
       .addCase(register.rejected, (state, action: PayloadAction<any>) => {
-        state.errorMessage = action.payload?.error;
+        state.errorMessage = action.payload?.message 
         state.loader = false;
       })
       // Login

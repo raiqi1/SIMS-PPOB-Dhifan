@@ -92,6 +92,10 @@ export default function Account() {
                 src={profile?.profile_image}
                 alt=""
                 className="w-24 h-24 rounded-full mt-28 border border-gray-300 p-[1px]"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).onerror = null; 
+                  (e.target as HTMLImageElement).src = "/assets/Profile.png"; 
+                }}
               />
             )}
             <input

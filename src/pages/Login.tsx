@@ -50,6 +50,8 @@ export default function Login() {
     }, 5000);
   }
 
+  console.log("errorMessage", errorMessage);
+
   return (
     <div className="flex w-full">
       <div className="w-full relative">
